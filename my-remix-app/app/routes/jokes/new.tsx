@@ -1,21 +1,20 @@
-import { ActionFunction } from "remix";
-import { redirect } from 'remix';
+import type { ActionFunction } from "remix";
+import { redirect } from "remix";
 import { db } from "~/utils/db.server";
 
-export let action: ActionFunction = async ({request}) => {
+export let action: ActionFunction = async ({ request }) => {
   let form = await request.formData();
-  let name = form.get('name'); 
-  let content = form.get('get');
-  if (typeof name !== 'string' || typeof content !== 'string') {
-    throw new Error('Form submitted incorrectly');
+  let name = form.get("name");
+  let content = form.get("content");
+  if (typeof name !== "string" || typeof content !== "string") {
+    throw new Error("Form submitted incorrectly");
   }
-  
-  const joke = await db.joke.create({
-    data: { name, content }
-  });
-  return redirect(`/jokes/${joke.id}`); 
-}
 
+  let joke = await db.joke.create({
+    data: { name, content },
+  });
+  return redirect(`/jokes/${joke.id}`);
+};
 
 export default function NewJokeRoute() {
   return (
@@ -41,3 +40,4 @@ export default function NewJokeRoute() {
     </div>
   );
 }
+
